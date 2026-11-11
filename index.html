@@ -203,7 +203,7 @@ function paint(){
   if(prop){hi=covBy(prop);miss=N.map((n,i)=>(S3[i]||S4[i])&&!hi[i]);}
   else if(view==='comparar'){const sp=CMP.sel||cmpOrd()[0];hi=N.map(n=>!!(n.ap&&n.ap.includes(sp)));}
   else if(view==='dua'){const SUB=D.rotdua.sub,inS=n=>n.du>=0&&n.d>=1&&(SUB[n.du]===DUAS.sel||SUB[n.du].startsWith(DUAS.sel+'_')),pl=covBy('plan');hi=N.map((n,i)=>inS(n)&&pl[i]);miss=N.map((n,i)=>inS(n)&&!pl[i]);}
-  else if(view==='cuatro')hi=S4;else if(view==='hubs')hi=HS;else if(view==='tres')hi=S3;else if(!allVis())hi=linkedAll();
+  else if(view==='cuatro')hi=S4;else if(view==='hubs')hi=HS;else if(view==='tres')hi=S3;else if(!allVis()&&ACT.filter(a=>vis[a]).length>=2)hi=linkedAll();
   for(let i=0;i<NN;i++){let c=baseCol[i].clone(),s=baseSize[i],a=0.9;
     if(!vis[ACT[N[i].a]]){colA[i*3]=colA[i*3+1]=colA[i*3+2]=0;sizeA[i]=0;alphaA[i]=0;continue;}
     if(hi){if(hi[i]){const g=prop||view==='comparar'||view==='dua';c.lerp(g?G:W,g?0.45:0.25);s*=g&&!prop?2.6:1.9;a=1;}else if(miss&&miss[i]){c=R.clone();s*=1.25;a=0.85;}else{a=N[i].d===0?0.9:0.13;}}
