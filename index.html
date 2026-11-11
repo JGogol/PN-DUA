@@ -247,10 +247,14 @@ function renderPanel(){
     h+=`<div class="q"><b>¿Y a lo que comparten solo <span style="color:var(--noa)">Noa</span>, <span style="color:var(--ariel)">Ariel</span> y <span style="color:var(--sasha)">Sasha</span>?</b> `+(cl.length?`Toca ${cl.length} de esas ${n3} condiciones: ${cl.map(esc).join(', ')}.`:`No toca ninguna de esas ${n3} condiciones (instrucciones claras, pasos ordenados, retroalimentación inmediata…).`)+`</div>`;
     const cnt={};N.forEach(n=>(n.c&&n.c[prop]||[]).forEach(f=>{(cnt[f]=cnt[f]||{})[ACT[n.a]]=(cnt[f][ACT[n.a]]||0)+1;}));
     const ps=p.props.filter(x=>cnt[x.id]).sort((x,y)=>Object.keys(cnt[y.id]).length-Object.keys(cnt[x.id]).length||y.cubre-x.cubre);const zero=p.props.length-ps.length;
-    h+=`<div class="q"><b>Dónde conecta cada frase</b></div>`+ps.slice(0,10).map(x=>{const c=cnt[x.id],falta=ACT.filter(a=>!c[a]);
-      return `<div class="pl"><div class="fr">«${esc(x.es||x.q)}»${x.pag?' <i>p. '+esc(x.pag)+'</i>':''}</div>`+ACT.filter(a=>c[a]).map(a=>`<span class="chip" style="color:${HEX[a]}">${a} ${c[a]}</span>`).join('')+
-      `<i>${falta.length?'· no llega a '+falta.join(', '):'· llega a los cuatro'}</i></div>`;}).join('')+
-      (ps.length>10?`<div class="pl"><i>y ${ps.length-10} frases más que conectan.</i></div>`:'')+(zero?`<div class="pl"><i>${zero} de ${p.props.length} frases no llegan a ningún alumno.</i></div>`:'');
+    const fr=x=>`<div class="fr">«${esc(x.es||x.q)}»${x.pag?' <i>p. '+esc(x.pag)+'</i>':''}</div>`;
+    const una=x=>{const c=cnt[x.id],falta=ACT.filter(a=>!c[a]);
+      return `<div class="pl">${fr(x)}`+ACT.filter(a=>c[a]).map(a=>`<span class="chip" style="color:${HEX[a]}">${a} ${c[a]}</span>`).join('')+
+      `<i>${falta.length?'· no llega a '+falta.join(', '):'· llega a los cuatro'}</i></div>`;};
+    const nada=p.props.filter(x=>!cnt[x.id]);
+    h+=`<div class="q"><b>Dónde conecta cada frase</b> (${ps.length} de ${p.props.length})</div>`+ps.slice(0,10).map(una).join('')+
+      (ps.length>10?`<details class="pl"><summary><i>Ver las otras ${ps.length-10} frases que conectan</i></summary>${ps.slice(10).map(una).join('')}</details>`:'')+
+      (nada.length?`<div class="q"><b>Frases que no implican ninguna proposición de los árboles</b> (${nada.length} de ${p.props.length}). Para ninguna proposición de los cuatro alumnos los dos jueces dan implicación ≥ 0,55: el plan las pide, pero lo que dicen las guías de cada alumno no se sigue de ellas.</div>`+nada.map(x=>`<div class="pl">${fr(x)}<i>· no llega a ningún alumno</i></div>`).join(''):'');
     h+=`<div class="note">Dorado: lo que la propuesta alcanza. Rojo: lo común que queda afuera. Una frase "alcanza" una proposición cuando los dos jueces de inferencia dicen que la implica (probabilidad ≥ 0,55): es una cota prudente y puede tener falsos positivos. El sostén cuenta qué parte del razonamiento de cada alumno llega a esas proposiciones con un solo cruce entre árboles; por eso puede ser mayor que cero aunque la propuesta no conecte directamente con su árbol: le llega a través de una coincidencia certificada con otro alumno. Para ver todas las propuestas juntas: <b>Comparar propuestas</b>.</div>`;
     S.innerHTML=h;return;}
   if(view==='dua'){V.textContent='Principios DUA: qué atiende el plan oficial';
