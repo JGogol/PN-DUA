@@ -162,7 +162,7 @@ const fl=new THREE.LineSegments(fg,new THREE.LineBasicMaterial({vertexColors:tru
 const TE=[];N.forEach((n,i)=>{if(n.p>=0)TE.push([n.p,i]);});
 const tPos=new Float32Array(TE.length*6),tCol=new Float32Array(TE.length*6);
 const tg=new THREE.BufferGeometry();tg.setAttribute('position',new THREE.BufferAttribute(tPos,3));tg.setAttribute('color',new THREE.BufferAttribute(tCol,3));
-const tl=new THREE.LineSegments(tg,new THREE.LineBasicMaterial({vertexColors:true,transparent:true,opacity:0.5,blending:THREE.AdditiveBlending,depthWrite:false}));tl.visible=false;world.add(tl);
+const tl=new THREE.LineSegments(tg,new THREE.LineBasicMaterial({vertexColors:true,transparent:true,opacity:0.5,blending:THREE.AdditiveBlending,depthWrite:false}));tl.visible=true;world.add(tl);
 function updLines(){
   FE.forEach(([u,v],k)=>{for(let j=0;j<3;j++){fPos[k*6+j]=P[u*3+j];fPos[k*6+3+j]=P[v*3+j];}});fg.attributes.position.needsUpdate=true;
   TE.forEach(([u,v],k)=>{for(let j=0;j<3;j++){tPos[k*6+j]=P[u*3+j];tPos[k*6+3+j]=P[v*3+j];}});tg.attributes.position.needsUpdate=true;
